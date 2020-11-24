@@ -39,9 +39,9 @@ static unsigned int prog_pagesize;
 static uchar prog_blockflags;
 static uchar prog_pagecounter;
 
-uchar usbFunctionSetup(uchar data[8]) {
+usbMsgLen_t usbFunctionSetup(uchar data[8]) {
 
-	uchar len = 0;
+	usbMsgLen_t len = 0;
 
 	if (data[1] == USBASP_FUNC_CONNECT) {
 
