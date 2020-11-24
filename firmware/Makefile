@@ -10,8 +10,18 @@
 # TARGET=atmega88   HFUSE=0xdd  LFUSE=0xff
 # TARGET=at90s2313
 TARGET=atmega8
-HFUSE=0xc9
-LFUSE=0xef
+
+ifeq ($(TARGET), atmega8) 
+	HFUSE=0xc9
+	LFUSE=0xef
+else ifeq ($(TARGET), atmega48) 
+	HFUSE=0xdd
+	LFUSE=0xff
+else ifeq ($(TARGET), atmega88)
+	HFUSE=0xdd
+	LFUSE=0xff
+endif
+
 
 #
 #usbasp
@@ -103,7 +113,7 @@ cpp:
 	$(COMPILE) -E main.c
 
 flash:
-	avrdude -c ${ISP} -B ${FLASHSPEED} -p ${TARGET} -P ${PORT} -U flash:w:main.hex
+	avrdude -c ${ISP} -B ${FLASHSPEED} -e -p ${TARGET} -P ${PORT} -U flash:w:main.hex
 
 fuses:
 	avrdude -c ${ISP} -p ${TARGET} -P ${PORT} -u -U hfuse:w:$(HFUSE):m -U lfuse:w:$(LFUSE):m
