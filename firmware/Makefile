@@ -2,14 +2,29 @@
 #   Makefile for usbasp
 #   20061119   Thomas Fischl        original
 #   20061120   Hanns-Konrad Unger   help: and TARGET=atmega48 added
-#
+#	20201124   Ser9ei usb-v updated, usbisp support
+				
 
 # TARGET=atmega8    HFUSE=0xc9  LFUSE=0xef
 # TARGET=atmega48   HFUSE=0xdd  LFUSE=0xff
+# TARGET=atmega88   HFUSE=0xdd  LFUSE=0xff
 # TARGET=at90s2313
 TARGET=atmega8
 HFUSE=0xc9
 LFUSE=0xef
+
+#
+#usbasp
+#usb D+ -> 32 pd2(int0)
+#usb D- -> 12 pb0(icp1)
+#
+#usbisp
+#usb D+ -> 32 pd2(int0)
+#usb D- -> 1  pd3(int1)
+#
+# SBISP_AS_USBASP=0  build flash for usbasp
+# SBISP_AS_USBASP=1  build flash for usbisp
+USBISP_AS_USBASP=0
 
 
 # ISP=bsd      PORT=/dev/parport0
@@ -18,7 +33,17 @@ LFUSE=0xef
 # ISP=usbasp   PORT=/dev/usb/ttyUSB0
 # ISP=stk500v2 PORT=/dev/ttyUSB0
 ISP=usbasp
-PORT=/dev/usb/ttyUSB0
+PORT=usb
+FLASHSPEED=1.0
+# FLASHSPEED=0.5 1.5Mhz
+# FLASHSPEED=1.0 750Khz
+# FLASHSPEED=2.0 375Khz
+# FLASHSPEED=4.0 187.5Khz
+# FLASHSPEED=8.0 93.75Khz
+
+
+all: clean main.hex
+program: fuses flash 
 
 help:
 	@echo "Usage: make                same as make help"
@@ -30,14 +55,16 @@ help:
 	@echo "       make fuses          program fuses"
 	@echo "       make avrdude        test avrdude"
 	@echo "Current values:"
+	@echo "       USBISP_AS_USBASP=${USBISP_AS_USBASP}"
 	@echo "       TARGET=${TARGET}"
 	@echo "       LFUSE=${LFUSE}"
 	@echo "       HFUSE=${HFUSE}"
 	@echo "       CLOCK=12000000"
 	@echo "       ISP=${ISP}"
 	@echo "       PORT=${PORT}"
+	@echo "       FLASHSPEED=${FLASHSPEED}"
 
-COMPILE = avr-gcc -Wall -O2 -Iusbdrv -I. -mmcu=$(TARGET) # -DDEBUG_LEVEL=2
+COMPILE = avr-gcc -Wall -O2 -Iusbdrv -I. -mmcu=$(TARGET) -DUSBISP_AS_USBASP=$(USBISP_AS_USBASP) # -DDEBUG_LEVEL=2 
 
 OBJECTS = usbdrv/usbdrv.o usbdrv/usbdrvasm.o usbdrv/oddebug.o isp.o clock.o tpi.o main.o
 
@@ -76,7 +103,7 @@ cpp:
 	$(COMPILE) -E main.c
 
 flash:
-	avrdude -c ${ISP} -p ${TARGET} -P ${PORT} -U flash:w:main.hex
+	avrdude -c ${ISP} -B ${FLASHSPEED} -p ${TARGET} -P ${PORT} -U flash:w:main.hex
 
 fuses:
 	avrdude -c ${ISP} -p ${TARGET} -P ${PORT} -u -U hfuse:w:$(HFUSE):m -U lfuse:w:$(LFUSE):m

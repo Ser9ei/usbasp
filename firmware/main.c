@@ -6,7 +6,7 @@
  * License........: GNU GPL v2 (see Readme.txt)
  * Target.........: ATMega8 at 12 MHz
  * Creation Date..: 2005-02-20
- * Last change....: 2009-02-28
+ * Last change....: 2020-11-24
  *
  * PC2 SCK speed option.
  * GND  -> slow (8khz SCK),
@@ -24,6 +24,8 @@
 #include "clock.h"
 #include "tpi.h"
 #include "tpi_defs.h"
+
+
 
 static uchar replyBuffer[8];
 
@@ -307,8 +309,13 @@ int main(void) {
 	PORTD = 0;
 	PORTB = 0;
 	/* all outputs except PD2 = INT0 */
-	DDRD = ~(1 << 2);
-
+	//DDRD = ~(1 << 2);
+	if ( USBISP_AS_USBASP == 1 )
+		/* all outputs except PD2 = INT0 & PD3 = INT1 */
+		DDRD = 0b11110011;
+	else
+		/* all outputs except PD2 = INT0 */
+		DDRD = 0b11111011;
 	/* output SE0 for USB reset */
 	DDRB = ~0;
 	j = 0;
