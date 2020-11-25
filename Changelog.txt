@@ -1,3 +1,8 @@
+usbasp.2020-11-25 (v2.0) by Ser9ei
+----------------------------------
+- 25-flash, 24-eeprom, 93-eeprom support
+merge changes from https://github.com/nofeletru/UsbAsp-flash by Tify
+
 usbasp.2020-11-24 (v1.5) by Ser9ei
 ----------------------------------
 - usb-v updated to the last release 2012-12-06
