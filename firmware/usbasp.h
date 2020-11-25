@@ -30,8 +30,22 @@
 #define USBASP_FUNC_TPI_WRITEBLOCK   16
 #define USBASP_FUNC_GETCAPABILITIES 127
 
+#define USBASP_FUNC_SPI_CONNECT		 50
+#define USBASP_FUNC_SPI_READ  		 51
+#define USBASP_FUNC_SPI_WRITE		 52
+
+#define USBASP_FUNC_I2C_INIT		 70
+#define USBASP_FUNC_I2C_READ		 71
+#define USBASP_FUNC_I2C_WRITE		 72
+#define USBASP_FUNC_I2C_ACK 		 73
+
+#define USBASP_FUNC_MW_READ			 92
+#define USBASP_FUNC_MW_WRITE		 93
+#define USBASP_FUNC_MW_BUSY			 94
+
 /* USBASP capabilities */
 #define USBASP_CAP_0_TPI    0x01
+#define USBASP_CAP_3_FLASH	0x01
 
 /* programming state */
 #define PROG_STATE_IDLE         0
@@ -41,6 +55,15 @@
 #define PROG_STATE_WRITEEEPROM  4
 #define PROG_STATE_TPI_READ     5
 #define PROG_STATE_TPI_WRITE    6
+
+#define PROG_STATE_SPI_WRITE	50
+#define PROG_STATE_SPI_READ		51
+
+#define PROG_STATE_I2C_WRITE	53
+#define PROG_STATE_I2C_READ		54
+
+#define PROG_STATE_MW_READ		57
+#define PROG_STATE_MW_WRITE		58
 
 /* Block mode flags */
 #define PROG_BLOCKFLAG_FIRST    1
@@ -60,6 +83,7 @@
 #define USBASP_ISP_SCK_375    10  /* 375 kHz   */
 #define USBASP_ISP_SCK_750    11  /* 750 kHz   */
 #define USBASP_ISP_SCK_1500   12  /* 1.5 MHz   */
+#define USBASP_ISP_SCK_3000   13  /* 3 MHz   */
 
 /* macros for gpio functions */
 #define ledRedOn()    PORTC &= ~(1 << PC1)

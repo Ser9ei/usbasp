@@ -24,11 +24,18 @@
 #define ISP_MISO  PB4
 #define ISP_SCK   PB5
 
+#define CS_LOW()	ISP_OUT &= ~(1 << ISP_RST); /* RST low */
+#define CS_HI()		ISP_OUT |= (1 << ISP_RST); /* RST high */
+
 /* Prepare connection to target device */
 void ispConnect();
 
+void isp25Connect();
+
 /* Close connection to target device */
 void ispDisconnect();
+
+void ispDelay();
 
 /* read an write a byte from isp using software (slow) */
 uchar ispTransmit_sw(uchar send_byte);
@@ -61,5 +68,7 @@ void ispSetSCKOption(uchar sckoption);
 
 /* load extended address byte */
 void ispLoadExtendedAddressByte(unsigned long address);
+
+void spibusy(void);
 
 #endif /* __isp_h_included__ */

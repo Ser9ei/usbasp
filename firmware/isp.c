@@ -38,6 +38,10 @@ void ispSetSCKOption(uchar option) {
 
 		switch (option) {
 
+		case USBASP_ISP_SCK_3000:
+			/* enable SPI, master, 3MHz, XTAL/4 */
+			sck_spcr = (1 << SPE) | (1 << MSTR);
+			break;
 		case USBASP_ISP_SCK_1500:
 			/* enable SPI, master, 1.5MHz, XTAL/8 */
 			sck_spcr = (1 << SPE) | (1 << MSTR) | (1 << SPR0);
@@ -127,6 +131,18 @@ void ispConnect() {
 	
 	/* Initial extended address value */
 	isp_hiaddr = 0;
+}
+
+void isp25Connect() {
+	/* all ISP pins are inputs before */
+	/* now set output pins */
+	ISP_DDR |= (1 << ISP_RST) | (1 << ISP_SCK) | (1 << ISP_MOSI);
+	
+	if (ispTransmit == ispTransmit_hw) {
+		spiHWenable();
+	}
+	
+	CS_HI();
 }
 
 void ispDisconnect() {

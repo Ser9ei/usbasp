@@ -3,6 +3,7 @@
 #   20061119   Thomas Fischl        original
 #   20061120   Hanns-Konrad Unger   help: and TARGET=atmega48 added
 #   20201124   Ser9ei v-usb updated, usbisp support
+#   20201125   Ser9ei merge changes from https://github.com/nofeletru/UsbAsp-flash by Tify (25-flash, 24-eeprom, 93-eeprom support)
 				
 
 # TARGET=atmega8    HFUSE=0xc9  LFUSE=0xef
@@ -86,7 +87,7 @@ help:
 
 COMPILE = avr-gcc -Wall -O2 -Iusbdrv -I. -mmcu=$(TARGET) -DUSBISP_AS_USBASP=$(USBISP_AS_USBASP) # -DDEBUG_LEVEL=2 
 
-OBJECTS = usbdrv/usbdrv.o usbdrv/usbdrvasm.o usbdrv/oddebug.o isp.o clock.o tpi.o main.o
+OBJECTS = usbdrv/usbdrv.o usbdrv/usbdrvasm.o usbdrv/oddebug.o isp.o clock.o tpi.o i2c.o microwire.o main.o
 
 .c.o:
 	$(COMPILE) -c $< -o $@

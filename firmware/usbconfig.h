@@ -20,6 +20,8 @@ recommend that you use that file as a template because it will always list
 the newest features and options.
 */
 
+#define USB_CFG_LONG_TRANSFERS 1
+
 /* ---------------------------- Hardware Config ---------------------------- */
 
 #define USB_CFG_IOPORTNAME      B
