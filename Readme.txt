@@ -13,7 +13,7 @@ Features:
 - No special controllers or smd components are needed.
 - Programming speed is up to 5kBytes/sec.
 - SCK option to support targets with low clock speed (< 1,5MHz).
-- Planned: serial interface to target (e.g. for debugging).
+- Support read/write for 25 flash, 24 eeprom, 93 eeprom
 
 
 LICENSE
