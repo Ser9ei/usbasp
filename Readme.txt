@@ -5,6 +5,9 @@ consists of an ATMega88 or an ATMega8 and a couple of passive components.
 The programmer uses a firmware-only USB driver, no special USB controller
 is needed.
 
+Current version is based on source of Thomas Fischl <tfischl@gmx.de> http://www.fischl.de from 2011-05-28
+And was created to enable support another clone of usbisp device - usbisp. Usbisp has minor difference in schema.
+
 Features:
 - Works under multiple platforms. Linux, Mac OS X and Windows are tested.
 - No special controllers or smd components are needed.
@@ -36,10 +39,15 @@ interface to slave exists in hardware but the firmware doesn't support it yet.
 USE PRECOMPILED VERSION
 
 Firmware:
-Flash "bin/firmware/usbasp.atmega88.xxxx-xx-xx.hex" or
-"bin/firmware/usbasp.atmega8.xxxx-xx-xx.hex" to the used controller with a
+Every release has source code and archives of compiled firmwares.
+For example:
+  "Source code (zip)"
+  "usbasp-firmware_vXX.zip"
+  "usbisp2usbasp-firmware_vXX.zip"
+Where "usbasp-firmware_vXX.zip" - firmwares for usbasp, and "usbisp2usbasp-firmware_vXX.zip" - for usbisp.
+Extract zip with firmwares and flash "usbasp.atmega8X.xxxx-xx-xx.hex" (for usbasp) or "usbisp.atmega8X.xxxx-xx-xx.hex" (for usbisp)  to the used controller with a
 working programmer (e.g. with avrdude, uisp, ...). Set jumper J2 to activate
-USBasp firmware update function.
+USBasp firmware update function (for usbisp it should be jumper between PC6-RESET & PB2-SS/OC1B).
 You have to change the fuse bits for external crystal (see "make fuses").
 # TARGET=atmega8    HFUSE=0xc9  LFUSE=0xef
 # TARGET=atmega48   HFUSE=0xdd  LFUSE=0xff
@@ -58,14 +66,17 @@ Now you can run avrdude. Examples:
 
 Setting jumpers:
 J1 Power target
-   Supply target with 5V (USB voltage). Be careful with this option, the
+   Supply target with 5V (USB voltage) or 3V (in case the device with voltage convertor to 3.3). Be careful with this option, the
    circuit isn't protected against short circuit!
+   *usbisp does not support this feature.
 J2 Jumper for firmware upgrade (not self-upgradable)
    Set this jumper for flashing the ATMega(4)8 of USBasp with another working
    programmer.
+   *For usbisp it should be jumper between PC6-RESET & PB2-SS/OC1B   
 J3 SCK option
    If the target clock is lower than 1,5 MHz, you have to set this jumper.
    Then SCK is scaled down from 375 kHz to about 8 kHz.
+   *usbisp does not support this feature.
 
 
 BUILDING AND INSTALLING FROM SOURCE CODE
@@ -121,7 +132,6 @@ firmware/usbdrv/License.txt ..... Public license for AVR USB driver and USBasp
 circuit ......................... Circuit diagram in PDF and EAGLE format
 bin ............................. Precompiled programs
 bin/win-driver .................. Windows driver
-bin/firmware .................... Precompiled firmware
 bin/linux-nonroot ............... Linux device rule file
 
 
@@ -138,5 +148,4 @@ libusb .......................... http://libusb.sourceforge.net/
 libusb-win32 .................... http://libusb-win32.sourceforge.net/
 
 
-2011-05-28 Thomas Fischl <tfischl@gmx.de>
-http://www.fischl.de
+Ser9ei
