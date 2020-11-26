@@ -1,9 +1,7 @@
 
-firmware/main.hex
 *.map
 firmware/main.bin
 *.o
-firmware/usbasp.atmega8.2020-11-25.hex
-bin/firmware/main.hex
-*.bak
 *.hex
+*.bak
+.gitignore
