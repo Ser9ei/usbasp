@@ -6,7 +6,7 @@ The programmer uses a firmware-only USB driver, no special USB controller
 is needed.
 
 Current version is based on source of Thomas Fischl <tfischl@gmx.de> http://www.fischl.de from 2011-05-28
-And was created to enable support another clone of usbisp device - usbisp. Usbisp has with minor difference in schema.
+And was created to enable support another clone of usbisp device - usbisp. Usbisp has minor difference in schema.
 
 Features:
 - Works under multiple platforms. Linux, Mac OS X and Windows are tested.
