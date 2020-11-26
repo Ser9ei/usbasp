@@ -4,6 +4,7 @@
 #   20061120   Hanns-Konrad Unger   help: and TARGET=atmega48 added
 #   20201124   Ser9ei v-usb updated, usbisp support
 #   20201125   Ser9ei merge changes from https://github.com/nofeletru/UsbAsp-flash by Tify (25-flash, 24-eeprom, 93-eeprom support)
+#   20201126   Ser9ei merge changes from TTAV134 NeoProgrammer project in part of flash&eerprom. This version is for testing purposes only usbisp programmer with NeoProgrammer
 				
 
 # TARGET=atmega8    HFUSE=0xc9  LFUSE=0xef
@@ -35,7 +36,7 @@ endif
 #
 # SBISP_AS_USBASP=0  build flash for usbasp
 # SBISP_AS_USBASP=1  build flash for usbisp
-USBISP_AS_USBASP=0
+USBISP_AS_USBASP=1
 
 
 # ISP=bsd      PORT=/dev/parport0

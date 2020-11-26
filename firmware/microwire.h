@@ -1,10 +1,11 @@
 //Functions for sw microwire interface
-void mwStart();
 
-void mwSendData(unsigned int data,unsigned char n);
+void mwSendData(unsigned char data,unsigned char n);
 
 unsigned char mwReadByte();
 
 void mwEnd();
 
 uchar mwBusy();
+
+unsigned char mwGetAdrLen();

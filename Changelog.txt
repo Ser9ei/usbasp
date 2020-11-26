@@ -1,3 +1,8 @@
+usbasp.2020-11-26 (v2.1 beta) by Ser9ei
+----------------------------------
+- Merge code in part of 25-flash, 24-eeprom, 93-eeprom support from 2.2 version firmware usbasp of the NeoProgrammer (by TTAV134).
+This version is for testing purposes only usbisp programmer with NeoProgrammer.
+
 usbasp.2020-11-25 (v2.0) by Ser9ei
 ----------------------------------
 - 25-flash, 24-eeprom, 93-eeprom support
