@@ -1,7 +1,0 @@
-
-*.map
-firmware/main.bin
-*.o
-*.hex
-*.bak
-.gitignore
