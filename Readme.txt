@@ -13,8 +13,6 @@ Features:
 - No special controllers or smd components are needed.
 - Programming speed is up to 5kBytes/sec.
 - SCK option to support targets with low clock speed (< 1,5MHz).
-- Planned: serial interface to target (e.g. for debugging).
-
 
 LICENSE
 
