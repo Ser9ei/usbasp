@@ -62,7 +62,7 @@ endif
 out_name:=$(out_name)$(TARGET).$(shell date +%Y-%m-%d).hex
 
 all: clean main.hex
-	rm -f usb*.hex
+	rm -f $(out_name)
 	cp main.hex $(out_name) 
 
 program: fuses flash 
