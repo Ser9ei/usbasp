@@ -36,7 +36,7 @@ endif
 #
 # SBISP_AS_USBASP=0  build flash for usbasp
 # SBISP_AS_USBASP=1  build flash for usbisp
-USBISP_AS_USBASP=0
+USBISP_AS_USBASP=1
 
 
 # ISP=bsd      PORT=/dev/parport0
