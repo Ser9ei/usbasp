@@ -141,8 +141,8 @@ void isp25Connect() {
 	if (ispTransmit == ispTransmit_hw) {
 		spiHWenable();
 	}
-	
-	CS_HI();
+	CS_LOW(); // CS low, TTAV134 20/05/2020
+	//CS_HI();
 }
 
 void ispDisconnect() {

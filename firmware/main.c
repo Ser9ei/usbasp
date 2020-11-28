@@ -6,7 +6,7 @@
  * License........: GNU GPL v2 (see Readme.txt)
  * Target.........: ATMega8 at 12 MHz
  * Creation Date..: 2005-02-20
- * Last change....: 2020-11-25
+ * Last change....: 2020-11-29
  *
  * PC2 SCK speed option.
  * GND  -> slow (8khz SCK),
@@ -82,14 +82,14 @@ usbMsgLen_t usbFunctionSetup(uchar data[8]) {
 	} else if (data[1] == USBASP_FUNC_SPI_READ) {
 		CS_LOW();
 		spi_cs_hi = data[2]; //
-		prog_nbytes = (data[7] << 8) | data[6]; //Длинна буфера данных
+		prog_nbytes = (data[7] << 8) | data[6]; //Data buffer length
 		prog_state = PROG_STATE_SPI_READ;
 		len = USB_NO_MSG;
 		
 	} else if (data[1] == USBASP_FUNC_SPI_WRITE) {
 		CS_LOW();
 		spi_cs_hi = data[2]; //
-		prog_nbytes = (data[7] << 8) | data[6]; //Длинна буфера данных
+		prog_nbytes = (data[7] << 8) | data[6]; //Data buffer length
 		prog_state = PROG_STATE_SPI_WRITE;
 		len = USB_NO_MSG;
 
@@ -116,15 +116,15 @@ usbMsgLen_t usbFunctionSetup(uchar data[8]) {
 			
 	} else if (data[1] == USBASP_FUNC_I2C_READ) {
 		i2c_address(data[2], I2C_READ);
-		prog_nbytes = (data[7] << 8) | data[6]; //Размер куска данных
+		prog_nbytes = (data[7] << 8) | data[6]; //Data Chunk Size
 		prog_state = PROG_STATE_I2C_READ;
 		len = USB_NO_MSG;
 
 	} else if (data[1] == USBASP_FUNC_I2C_WRITE) {
 		i2c_start();
-		i2c_address(data[2], I2C_WRITE); //Адрес устройства
-		i2c_stop_aw = data[4]; //Команда стоп(1) или старт(0)
-		prog_nbytes = (data[7] << 8) | data[6]; //Размер куска данных
+		i2c_address(data[2], I2C_WRITE); //Device address
+		i2c_stop_aw = data[4]; //Stop command (1) or start (0)
+		prog_nbytes = (data[7] << 8) | data[6]; //Data Chunk Size
 		prog_state = PROG_STATE_I2C_WRITE;
 		len = USB_NO_MSG;
 		
@@ -152,7 +152,7 @@ usbMsgLen_t usbFunctionSetup(uchar data[8]) {
 	} else if (data[1] == USBASP_FUNC_MW_BUSY) {
 		if (mwBusy() == 1) 
 		{
-			replyBuffer[0] = 1; //Линия занята
+			replyBuffer[0] = 1; //The line is busy
 		}
 		else
 		{
@@ -480,7 +480,11 @@ uchar usbFunctionWrite(uchar *data, uchar len) {
 		
 		if(prog_nbytes <= 0)
 		{
-			if (spi_cs_hi) CS_HI();
+			if (spi_cs_hi)
+			{ 
+			  //clockWait(1); // delay 320µs
+			  CS_HI(); 
+			}
 			return 1;
 		}
 
