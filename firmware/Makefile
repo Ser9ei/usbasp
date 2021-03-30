@@ -51,11 +51,11 @@ FLASHSPEED=1.0
 # FLASHSPEED=8.0 93.75Khz
 
 out_name=usbasp
-out_name:=$(out_name)$(TARGET)
+out_name:=$(out_name)_$(TARGET)
 ifeq ($(OS),Windows_NT)
-	out_name:=$(out_name).$(shell date.exe +%Y-%m-%d)
+	out_name:=$(out_name)_$(shell date.exe +%Y-%m-%d)
 else
-	out_name:=$(out_name).$(shell date +%Y-%m-%d)
+	out_name:=$(out_name)_$(shell date +%Y-%m-%d)
 endif
 out_name:=$(out_name).hex
 
@@ -69,8 +69,10 @@ program: fuses flash
 help:
 	@echo "Usage: make                same as make help"
 	@echo "       make help           same as make"
-	@echo "       make main.hex       create main.hex"
+	@echo "       make all            clean and build firmware"
+	@echo "       make program        program fuses and flash"
 	@echo "       make clean          remove redundant data"
+	@echo "       make main.hex       create main.hex"
 	@echo "       make disasm         disasm main"
 	@echo "       make flash          upload main.hex into flash"
 	@echo "       make fuses          program fuses"
