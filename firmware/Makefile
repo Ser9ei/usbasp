@@ -36,9 +36,6 @@ endif
 #usb D+ -> 32 pd2(int0)
 #usb D- -> 1  pd3(int1)
 #
-# SBISP_AS_USBASP=0  build flash for usbasp
-# SBISP_AS_USBASP=1  build flash for usbisp
-USBISP_AS_USBASP=1
 
 
 # ISP=bsd      PORT=/dev/parport0
@@ -55,12 +52,7 @@ FLASHSPEED=1.0
 # FLASHSPEED=4.0 187.5Khz
 # FLASHSPEED=8.0 93.75Khz
 
-out_name=usb
-ifeq ($(USBISP_AS_USBASP), 0) 
-	out_name:=$(out_name)asp.
-else ifeq ($(USBISP_AS_USBASP), 1)
-	out_name:=$(out_name)isp.
-endif
+out_name=usbasp
 out_name:=$(out_name)$(TARGET)
 ifeq ($(OS),Windows_NT)
 	out_name:=$(out_name).$(shell date.exe +%Y-%m-%d)
@@ -86,7 +78,6 @@ help:
 	@echo "       make fuses          program fuses"
 	@echo "       make avrdude        test avrdude"
 	@echo "Current values:"
-	@echo "       USBISP_AS_USBASP=${USBISP_AS_USBASP}"
 	@echo "       TARGET=${TARGET}"
 	@echo "       LFUSE=${LFUSE}"
 	@echo "       HFUSE=${HFUSE}"
@@ -95,7 +86,7 @@ help:
 	@echo "       PORT=${PORT}"
 	@echo "       FLASHSPEED=${FLASHSPEED}"
 
-COMPILE = avr-gcc -Wall -Os -Iusbdrv -I. -mmcu=$(TARGET) -DUSBISP_AS_USBASP=$(USBISP_AS_USBASP) # -DDEBUG_LEVEL=2 
+COMPILE = avr-gcc -Wall -Os -Iusbdrv -I. -mmcu=$(TARGET) # -DDEBUG_LEVEL=2 
 
 OBJECTS = usbdrv/usbdrv.o usbdrv/usbdrvasm.o usbdrv/oddebug.o isp.o clock.o tpi.o i2c.o microwire.o main.o
 
