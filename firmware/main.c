@@ -13,7 +13,7 @@
  * open -> software set speed (default is 375kHz SCK)
  */
 
-//#define AVR_SPI_SPEED_SEARCH
+#define AVR_SPI_SPEED_SEARCH
 
 #include <avr/io.h>
 #include <avr/interrupt.h>
