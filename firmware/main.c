@@ -198,7 +198,6 @@ usbMsgLen_t usbFunctionSetup(uchar data[8]) {
 
 	} else if (data[1] == USBASP_FUNC_ENABLEPROG) {
 		replyBuffer[0] = ispEnterProgrammingMode();
-		
 		#ifdef AVR_SPI_SPEED_SEARCH 
 		if (replyBuffer[0] != 0){ //target don't answer
 			uint8_t i, speed;
@@ -482,7 +481,7 @@ uchar usbFunctionWrite(uchar *data, uchar len) {
 		{
 			if (spi_cs_hi)
 			{ 
-			  //clockWait(1); // delay 320µs
+			  //clockWait(1); // delay 320пїЅs
 			  CS_HI(); 
 			}
 			return 1;
@@ -498,7 +497,7 @@ uchar usbFunctionWrite(uchar *data, uchar len) {
 
 		for (i = 0; i < len; i++)
 		{
-			//Пишем биты
+			//пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ
 			if(mw_bitnum > 0){
 				if(mw_bitnum < 8)
 				{
