@@ -6,12 +6,14 @@
  * License........: GNU GPL v2 (see Readme.txt)
  * Target.........: ATMega8 at 12 MHz
  * Creation Date..: 2005-02-20
- * Last change....: 2020-11-24
+ * Last change....: 2021-03-30
  *
  * PC2 SCK speed option.
  * GND  -> slow (8khz SCK),
  * open -> software set speed (default is 375kHz SCK)
  */
+
+//#define AVR_SPI_SPEED_SEARCH
 
 #include <avr/io.h>
 #include <avr/interrupt.h>
@@ -89,6 +91,27 @@ usbMsgLen_t usbFunctionSetup(uchar data[8]) {
 
 	} else if (data[1] == USBASP_FUNC_ENABLEPROG) {
 		replyBuffer[0] = ispEnterProgrammingMode();
+
+		#ifdef AVR_SPI_SPEED_SEARCH
+		if (replyBuffer[0] != 0){ //target don't answer
+			uint8_t i, speed;
+			
+			if (prog_sck == USBASP_ISP_SCK_AUTO)
+				speed = USBASP_ISP_SCK_187_5;
+			else
+				speed = prog_sck-1;
+			//trying lower speeds
+			for (i = speed; i >= USBASP_ISP_SCK_2; i--){
+				ispSetSCKOption(i);
+				replyBuffer[0] = ispEnterProgrammingMode();
+				if (replyBuffer[0] == 0){
+					ispSetSCKOption(i-1);
+					break;
+				}
+			}
+		}
+		#endif
+		
 		len = 1;
 
 	} else if (data[1] == USBASP_FUNC_WRITEFLASH) {
