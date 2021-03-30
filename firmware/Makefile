@@ -3,12 +3,14 @@
 #   20061119   Thomas Fischl        original
 #   20061120   Hanns-Konrad Unger   help: and TARGET=atmega48 added
 #   20201124   Ser9ei v-usb updated, usbisp support
+#   20210330   Ser9ei Build error under the Windows OS was fixed in the Makefile, 
+#                     Optimization parameter was changed in the Makefile, 
+#                     Added auto-speed (downshift speed) support feature in case error with connection to the target 
 				
 
 # TARGET=atmega8    HFUSE=0xc9  LFUSE=0xef
 # TARGET=atmega48   HFUSE=0xdd  LFUSE=0xff
 # TARGET=atmega88   HFUSE=0xdd  LFUSE=0xff
-# TARGET=at90s2313
 TARGET=atmega8
 
 ifeq ($(TARGET), atmega8) 
@@ -57,11 +59,18 @@ ifeq ($(USBISP_AS_USBASP), 0)
 else ifeq ($(USBISP_AS_USBASP), 1)
 	out_name:=$(out_name)isp.
 endif
-out_name:=$(out_name)$(TARGET).$(shell date +%Y-%m-%d).hex
+out_name:=$(out_name)$(TARGET)
+ifeq ($(OS),Windows_NT)
+	out_name:=$(out_name).$(shell date.exe +%Y-%m-%d)
+else
+	out_name:=$(out_name).$(shell date +%Y-%m-%d)
+endif
+out_name:=$(out_name).hex
 
 all: clean main.hex
 	rm -f $(out_name)
 	cp main.hex $(out_name) 
+	@avr-size -C --mcu=$(TARGET) main.bin
 
 program: fuses flash 
 
@@ -84,7 +93,7 @@ help:
 	@echo "       PORT=${PORT}"
 	@echo "       FLASHSPEED=${FLASHSPEED}"
 
-COMPILE = avr-gcc -Wall -O2 -Iusbdrv -I. -mmcu=$(TARGET) -DUSBISP_AS_USBASP=$(USBISP_AS_USBASP) # -DDEBUG_LEVEL=2 
+COMPILE = avr-gcc -Wall -Os -Iusbdrv -I. -mmcu=$(TARGET) -DUSBISP_AS_USBASP=$(USBISP_AS_USBASP) # -DDEBUG_LEVEL=2 
 
 OBJECTS = usbdrv/usbdrv.o usbdrv/usbdrvasm.o usbdrv/oddebug.o isp.o clock.o tpi.o main.o
 
@@ -112,9 +121,7 @@ main.bin:	$(OBJECTS)
 main.hex:	main.bin
 	rm -f main.hex main.eep.hex
 	avr-objcopy -j .text -j .data -O ihex main.bin main.hex
-#	./checksize main.bin
-# do the checksize script as our last action to allow successful compilation
-# on Windows with WinAVR where the Unix commands will fail.
+	
 
 disasm:	main.bin
 	avr-objdump -d main.bin
