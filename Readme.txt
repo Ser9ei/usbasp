@@ -41,21 +41,16 @@ Every release has source code and archives of compiled firmwares.
 For example:
   "Source code (zip)"
   "usbasp-firmware_vXX.zip"
-  "usbisp2usbasp-firmware_vXX.zip"
-Where "usbasp-firmware_vXX.zip" - firmwares for usbasp, and "usbisp2usbasp-firmware_vXX.zip" - for usbisp.
-Extract zip with firmwares and flash "usbasp.atmega8X.xxxx-xx-xx.hex" (for usbasp) or "usbisp.atmega8X.xxxx-xx-xx.hex" (for usbisp)  to the used controller with a
-working programmer (e.g. with avrdude, uisp, ...). Set jumper J2 to activate
-USBasp firmware update function (for usbisp it should be jumper between PC6-RESET & PB2-SS/OC1B).
+Where "usbasp-firmware_vXX.zip" - firmwares for usbasp/usbisp.
+Extract zip with firmwares and flash "usbasp.atmega8X.xxxx-xx-xx.hex" to the used controller with a working programmer (e.g. with avrdude, uisp, ...). Set jumper J2 to activate USBasp firmware update function (for usbisp it should be jumper between PC6-RESET & PB2-SS/OC1B).
 You have to change the fuse bits for external crystal (see "make fuses").
 # TARGET=atmega8    HFUSE=0xc9  LFUSE=0xef
 # TARGET=atmega48   HFUSE=0xdd  LFUSE=0xff
 # TARGET=atmega88   HFUSE=0xdd  LFUSE=0xff
 
 Windows:
-Start Windows and connect USBasp to the system. When Windows asks for a
-driver, choose "bin/win-driver". On Win2k and WinXP systems, Windows will
-warn that the driver is is not 'digitally signed'. Ignore this message and
-continue with the installation.
+Start Windows and connect USBasp to the system.
+Usbasp/usbisp needs to install driver, please find it in the internet or try to use the Zadic utility (https://zadig.akeo.ie).
 Now you can run avrdude. Examples:
 1. Enter terminal mode with an AT90S2313 connected to the programmer:
    avrdude -c usbasp -p at90s2313 -t
@@ -82,10 +77,11 @@ BUILDING AND INSTALLING FROM SOURCE CODE
 Firmware:
 To compile the firmware
 1. install the GNU toolchain for AVR microcontrollers (avr-gcc, avr-libc),
-2. change directory to firmware/
-3. run "make main.hex"
-4. flash "main.hex" to the ATMega(4)8. E.g. with uisp or avrdude (check
-the Makefile option "make flash"). To flash the firmware you have
+2. change directory to firmware
+3. change TARGET parameter in the makefile file if necessary (by default there is atemega8 and available to select atmega8, atmega88 or atmega48)
+4. run "make all"
+5. flash "hex" file to the ATMega. E.g. with uisp or avrdude (check
+the Makefile option "make flash" or "make program" to program memory and fuses). To flash the firmware you have
 to set jumper J2 and connect USBasp to a working programmer.
 You have to change the fuse bits for external crystal, (check the Makefile
 option "make fuses").
@@ -128,9 +124,6 @@ firmware ........................ Source code of the controller firmware
 firmware/usbdrv ................. AVR USB driver by Objective Development
 firmware/usbdrv/License.txt ..... Public license for AVR USB driver and USBasp
 circuit ......................... Circuit diagram in PDF and EAGLE format
-bin ............................. Precompiled programs
-bin/win-driver .................. Windows driver
-bin/linux-nonroot ............... Linux device rule file
 
 
 MORE INFORMATION
